@@ -1,8 +1,11 @@
 
+import javax.swing.tree.TreeNode;
 import java.util.*;
 import java.util.Collections;
 
 public class Main {
+
+
 
     public static  class TreeNode {
         int val = 0;
@@ -16,56 +19,36 @@ public class Main {
 
     }
 
-    public static  ArrayList<ArrayList<Integer>> Print(TreeNode pRoot) {
-        ArrayList<ArrayList<Integer>> res = new ArrayList<>();
-        if (pRoot == null) {
-            return res;
+
+    public static boolean process(int[] seq, int start, int end) {
+        if (start >= end) {
+            return true;
         }
-        Queue<TreeNode> queue = new LinkedList<>();
-        queue.add(pRoot);
-
-        int level = 0;
-
-        while (!queue.isEmpty()) {
-            int sz = queue.size();
-            ArrayList<Integer> levelRes = new ArrayList<>();
-            while (sz != 0) {
-                TreeNode cur = queue.poll();
-                levelRes.add(cur.val);
-                if (cur.left != null) {
-                    queue.add(cur.left);
-
-                }
-                if (cur.right != null) {
-                    queue.add(cur.right);
-
-                }
-                sz--;
+        int i;
+        for(i = start; i < end; i ++) {
+            if (seq[i] > seq[end]) {
+                break;
             }
-            level++;
-            if ((level & 1) == 0) {
-                Collections.reverse(levelRes);
-            }
-            res.add(levelRes);
-
         }
-        return res;
+        for (int j = i; j < end; j++) {
+            if (seq[j] < seq[end]) {
+                return false;
+            }
+        }
+        return process(seq, start, i - 1) && process(seq, i, end - 1);
+    }
 
+    public static boolean VerifySquenceOfBST(int [] sequence) {
+        if (sequence == null || sequence.length < 1) {
+            return false;
+        }
+        return process(sequence, 0, sequence.length - 1);
     }
 
     public static void main(String[] args) {
 
 
-        TreeNode head = new TreeNode(8);
-        head.left = new TreeNode(6);
-        head.right = new TreeNode(10);
-        head.left.left = new TreeNode(5);
-        head.left.right = new TreeNode(7);
-        head.right.left = new TreeNode(9);
-        head.right.right = new TreeNode(11);
-
-        ArrayList<ArrayList<Integer>> res = Print(head);
-
-        System.out.println("----");
+        int[] seq = {5, 7, 6, 9, 11, 10, 8};
+        System.out.println(VerifySquenceOfBST(seq));
     }
 }
