@@ -4,22 +4,19 @@ public class Problem05_BSFarLeftIndex {
 
 
 
+    //  大于等于num的最左边的数
     public static int farLeftIndex1(int[] arr, int num) {
-
-        if (arr == null || arr.length < 1) {
-            return -1;
-        }
         int l = 0;
         int r = arr.length - 1;
-        int mid = 0;
+        int m = 0;
         int index = -1;
         while (l < r) {
-            mid = l + ((r - l) >> 1);
-            if (arr[mid] >= num) {
-                index = mid;
-                r = mid - 1;
+            m = l + ((r - l) >> 1);
+            if (arr[m] >= num) {
+                index = m;
+                r = m -1;
             } else {
-                l = mid + 1;
+                l = m + 1;
             }
         }
         return arr[l] >= num? l : index;
